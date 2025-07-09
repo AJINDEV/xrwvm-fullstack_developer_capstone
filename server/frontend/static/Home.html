@@ -7,7 +7,26 @@
 <script>
 
 const logout = async (e) => {
-//Include the code for logout here.
+  // <<< PASTE THE PROVIDED JAVASCRIPT CODE HERE >>>
+  // Build logout URL and Make GET request to logout endpoint
+  let logout_url = window.location.origin+"/djangoapp/logout";
+  const res = await fetch(logout_url, {
+    method: "GET",
+  });
+  const json = await res.json();
+  if (json) {
+    // Clear session storage and reload page
+    let username = sessionStorage.getItem('username');
+    sessionStorage.removeItem('username');
+    window.location.href = window.location.origin;
+    window.location.reload();
+     // Notify user of logout
+    alert("Logging out "+username+"...") 
+  }
+  else {
+    alert("The user could not be logged out.")
+  }
+  // <<< END OF PASTED CODE >>>
 };
 
 let checkSession = ()=>{
@@ -26,6 +45,7 @@ let checkSession = ()=>{
 </script>
 </head>
 <body onload="checkSession()">
+<!-- The rest of your HTML file remains the same -->
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color:darkturquoise; height: 1in;">
   <div class="container-fluid">
     <h2 style="padding-right: 5%;">Dealerships</h2>

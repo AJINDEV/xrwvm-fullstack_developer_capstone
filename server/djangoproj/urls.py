@@ -14,16 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from django.views.generic import TemplateView
-from django.conf.urls.static import static
-from django.conf import settings
+from django.urls import path, include # Make sure include is imported
+from django.views.generic import TemplateView # Import TemplateView
 
 urlpatterns = [
+
     path('admin/', admin.site.urls),
+    
+    # Add this line to include your app's API URLs
     path('djangoapp/', include('djangoapp.urls')),
-    path('', TemplateView.as_view(template_name="Home.html")),
-    path('about/', TemplateView.as_view(template_name="About.html")),
-    # ADD THE NEW ROUTE FOR THE CONTACT PAGE HERE
-    path('contact/', TemplateView.as_view(template_name="Contact.html")),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    # Add this line to serve the React app for the login page
+    path('login/', TemplateView.as_view(template_name="index.html")),
+    # Add this line to serve the React app for the root URL
+    path('', TemplateView.as_view(template_name="index.html")),
+
+    # <<< ADD THIS LINE >>>
+    path('register/', TemplateView.as_view(template_name="index.html")),
+
+]

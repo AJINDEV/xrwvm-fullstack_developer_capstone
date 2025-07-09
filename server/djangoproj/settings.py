@@ -1,3 +1,5 @@
+# server/djangoproj/settings.py
+
 """
 Django settings for djangoproj project.
 
@@ -66,11 +68,14 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'djangoproj.urls'
 
+# <<< MODIFIED SECTION START >>>
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR,'frontend/static')
+            os.path.join(BASE_DIR, 'frontend/static'),
+            os.path.join(BASE_DIR, 'frontend/build'),
+            os.path.join(BASE_DIR, 'frontend/build/static'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -83,6 +88,7 @@ TEMPLATES = [
         },
     },
 ]
+# <<< MODIFIED SECTION END >>>
 
 WSGI_APPLICATION = 'djangoproj.wsgi.application'
 
@@ -144,7 +150,10 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# <<< MODIFIED SECTION START >>>
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'frontend/static')
+    os.path.join(BASE_DIR, 'frontend/static'),
+    os.path.join(BASE_DIR, 'frontend/build'),
+    os.path.join(BASE_DIR, 'frontend/build/static'),
 ]
-
+# <<< MODIFIED SECTION END >>>
