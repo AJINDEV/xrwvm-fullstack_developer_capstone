@@ -15,6 +15,8 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from .populate import initiate
 from .models import CarMake, CarModel
+from .restapis import get_request, analyze_review_sentiments, post_review
+
 
 
 # Get an instance of a logger
@@ -79,6 +81,18 @@ def registration(request):
         data = {"userName":username,"error":"Already Registered"}
         return JsonResponse(data)
 # <<< END OF ADDED FUNCTION >>>
+@csrf_exempt
+def add_review(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({"status": 403, "message": "Unauthorized"})
+
+    try:
+        data = json.loads(request.body)
+        response = post_review(data)
+        return JsonResponse({"status": 200, "message": "Review posted successfully", "response": response})
+    except Exception as e:
+        print(f"Error posting review: {e}")
+        return JsonResponse({"status": 500, "message": "Error in posting review"})
 
 # ... (rest of the file remains the same)
 def get_cars(request):
@@ -99,3 +113,38 @@ def get_cars(request):
         })
 
     return JsonResponse({"CarModels": data})
+
+from .restapis import get_request, analyze_review_sentiments
+
+# Get dealerships (optionally filtered by state)
+def get_dealerships(request, state="All"):
+    if state == "All":
+        endpoint = "/fetchDealers"
+    else:
+        endpoint = f"/fetchDealers/{state}"
+    dealerships = get_request(endpoint)
+    return JsonResponse({"status": 200, "dealers": dealerships})
+
+
+# Get a specific dealer by ID
+def get_dealer_details(request, dealer_id):
+    if dealer_id:
+        endpoint = f"/fetchDealer/{dealer_id}"
+        dealership = get_request(endpoint)
+        return JsonResponse({"status": 200, "dealer": dealership})
+    else:
+        return JsonResponse({"status": 400, "message": "Bad Request"})
+
+
+# Get reviews for a specific dealer, with sentiment analysis
+def get_dealer_reviews(request, dealer_id):
+    if dealer_id:
+        endpoint = f"/fetchReviews/dealer/{dealer_id}"
+        reviews = get_request(endpoint)
+        for review_detail in reviews:
+            response = analyze_review_sentiments(review_detail['review'])
+            print(response)
+            review_detail['sentiment'] = response['sentiment']
+        return JsonResponse({"status": 200, "reviews": reviews})
+    else:
+        return JsonResponse({"status": 400, "message": "Bad Request"})
