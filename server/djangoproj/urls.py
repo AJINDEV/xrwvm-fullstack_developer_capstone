@@ -27,7 +27,7 @@ urlpatterns = [
     path('login/', TemplateView.as_view(template_name="index.html")),
     # Add this line to serve the React app for the root URL
     path('', TemplateView.as_view(template_name="index.html")),
-
+    path('', include('djangoapp.urls')),
     # <<< ADD THIS LINE >>>
     path('register/', TemplateView.as_view(template_name="index.html")),
 

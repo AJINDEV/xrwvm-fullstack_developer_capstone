@@ -13,7 +13,8 @@ from django.http import JsonResponse
 import logging
 import json
 from django.views.decorators.csrf import csrf_exempt
-# from .populate import initiate
+from .populate import initiate
+from .models import CarMake, CarModel
 
 
 # Get an instance of a logger
@@ -80,3 +81,21 @@ def registration(request):
 # <<< END OF ADDED FUNCTION >>>
 
 # ... (rest of the file remains the same)
+def get_cars(request):
+    count = CarMake.objects.count()
+    if count == 0:
+        from .populate import initiate
+        initiate()
+    print(count)
+    car_models = CarModel.objects.select_related('car_make').all()
+    print(car_models)
+    data = []
+    for car in car_models:
+        data.append({
+            "CarModel": car.name,
+            "CarMake": car.car_make.name,
+            "Year": car.year,
+            "Type": car.type
+        })
+
+    return JsonResponse({"CarModels": data})

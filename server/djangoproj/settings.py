@@ -33,12 +33,12 @@ DEBUG = True
 # Add your specific hostname to this list
 ALLOWED_HOSTS = [
     'localhost',
-    'aascp2mca234-8000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai'
+    'aascp2mca234-8000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai'
 ]
 
 # Add your specific origin (with https://) to this list
 CSRF_TRUSTED_ORIGINS = [
-    'https://aascp2mca234-8000.theianext-1-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai'
+    'https://aascp2mca234-8000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai'
 ]
 
 REST_FRAMEWORK = {
