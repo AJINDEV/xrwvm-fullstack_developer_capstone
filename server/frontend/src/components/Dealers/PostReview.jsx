@@ -34,7 +34,7 @@ const PostReview = () => {
 
     let model_split = model.split(" ");
     let make_chosen = model_split[0];
-    let model_chosen = model_split[1];
+    let model_chosen = model_split.slice(1).join(" ");
 
     let jsoninput = JSON.stringify({
       "name": name,
@@ -69,9 +69,7 @@ const PostReview = () => {
     const retobj = await res.json();
     
     if(retobj.status === 200) {
-      let dealerobjs = Array.from(retobj.dealer)
-      if(dealerobjs.length > 0)
-        setDealer(dealerobjs[0])
+        setDealer(retobj.dealer);
     }
   }
 
@@ -110,7 +108,7 @@ const PostReview = () => {
       </div >
 
       <div className='input_field'>
-      Car Year <input type="int" onChange={(e) => setYear(e.target.value)} max={2023} min={2015}/>
+      Car Year <input type="number" onChange={(e) => setYear(e.target.value)} max={2025} min={1990} />
       </div>
 
       <div>

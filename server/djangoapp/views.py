@@ -130,8 +130,20 @@ def get_dealerships(request, state="All"):
 def get_dealer_details(request, dealer_id):
     if dealer_id:
         endpoint = f"/fetchDealer/{dealer_id}"
-        dealership = get_request(endpoint)
-        return JsonResponse({"status": 200, "dealer": dealership})
+        dealership_list = get_request(endpoint)
+        
+        if isinstance(dealership_list, list) and len(dealership_list) > 0:
+            dealership = dealership_list[0]
+            dealer_obj = {
+                "full_name": dealership.get("full_name", ""),
+                "address": dealership.get("address", ""),
+                "city": dealership.get("city", ""),
+                "state": dealership.get("state", ""),
+                "zip": dealership.get("zip", ""),
+            }
+            return JsonResponse({"status": 200, "dealer": dealer_obj})
+        else:
+            return JsonResponse({"status": 404, "message": "Dealer not found"})
     else:
         return JsonResponse({"status": 400, "message": "Bad Request"})
 

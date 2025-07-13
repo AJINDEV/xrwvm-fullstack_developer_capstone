@@ -24,11 +24,14 @@ urlpatterns = [
     # Add this line to include your app's API URLs
     path('djangoapp/', include('djangoapp.urls')),
     # Add this line to serve the React app for the login page
-    path('login/', TemplateView.as_view(template_name="index.html")),
+    path('login', TemplateView.as_view(template_name="index.html")),
     # Add this line to serve the React app for the root URL
     path('', TemplateView.as_view(template_name="index.html")),
-    path('', include('djangoapp.urls')),
+    # path('', include('djangoapp.urls')),
     # <<< ADD THIS LINE >>>
     path('register/', TemplateView.as_view(template_name="index.html")),
+    path('dealers/', TemplateView.as_view(template_name="index.html")),
+    path('dealer/<int:dealer_id>', TemplateView.as_view(template_name="index.html")),
+    path('postreview/<int:dealer_id>', TemplateView.as_view(template_name="index.html")),
 
 ]
